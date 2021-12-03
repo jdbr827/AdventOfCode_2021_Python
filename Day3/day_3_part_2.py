@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Callable
 
 from Day3.day_3_part_1 import convert_binary_to_decimal, BitStr
 
@@ -23,26 +23,28 @@ def split_data_by_bit_at_index(data: List[BitStr], idx: int) -> Tuple[List[BitSt
     return containing_zeros, containing_ones
 
 
-def compute_oxygen_generator_rating(input_filename: str) -> int:
+def compute_rating_based_on_bit_criterion(input_filename: str, bit_criterion: Callable[[List[BitStr], List[BitStr]], bool]):
     my_data: List[BitStr] = format_input(input_filename)
     n = len(my_data[0])
+
     idx = 0
-    while len(my_data) > 1:
+    while len(my_data) > 1 and idx < n:
         (containing_zeros, containing_ones) = split_data_by_bit_at_index(my_data, idx)
-        my_data = containing_ones if len(containing_ones) >= len(containing_zeros) else containing_zeros
+        my_data = containing_ones if bit_criterion(containing_ones, containing_zeros) else containing_zeros
         idx += 1
+
+    if idx >= n: raise ArithmeticError('out of indexes to narrow down')
+    if len(my_data) == 0: raise ArithmeticError('ran out of candidate ratings')
+
     return convert_binary_to_decimal(my_data[0])
+
+
+def compute_oxygen_generator_rating(input_filename: str) -> int:
+    return compute_rating_based_on_bit_criterion(input_filename, lambda ones, zeros: len(ones) >= len(zeros))
 
 
 def compute_c02_scrubber_rating(input_filename: str) -> int:
-    my_data: List[BitStr] = format_input(input_filename)
-    n = len(my_data[0])
-    idx = 0
-    while len(my_data) > 1:
-        (containing_zeros, containing_ones) = split_data_by_bit_at_index(my_data, idx)
-        my_data = containing_ones if len(containing_ones) < len(containing_zeros) else containing_zeros
-        idx += 1
-    return convert_binary_to_decimal(my_data[0])
+    return compute_rating_based_on_bit_criterion(input_filename, lambda ones, zeros: len(ones) < len(zeros))
 
 
 def compute_life_support_rating(input_filename: str) -> int:
