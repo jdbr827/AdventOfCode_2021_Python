@@ -1,20 +1,17 @@
 from typing import List, Tuple
 
-from Day3.day_3_part_1 import convert_binary_to_decimal
+from Day3.day_3_part_1 import convert_binary_to_decimal, BitStr
 
 
-def format_input(input_filename: str) -> List[str]:
+def format_input(input_filename: str) -> List[BitStr]:
     with open(input_filename) as file:
         lines = file.readlines()
         return [line.rstrip() for line in lines]
 
 
-def split_data_by_bit_at_index(data: List[str], idx: int) -> Tuple[List[str], List[str]]:
+def split_data_by_bit_at_index(data: List[BitStr], idx: int) -> Tuple[List[BitStr], List[BitStr]]:
     """
     Splits the inputted data by the value of the bit at the given index (0s in first output, 1s in second)
-    :param data:
-    :param idx:
-    :return:
     """
     containing_ones = []
     containing_zeros = []
@@ -26,8 +23,8 @@ def split_data_by_bit_at_index(data: List[str], idx: int) -> Tuple[List[str], Li
     return containing_zeros, containing_ones
 
 
-def compute_oxygen_generator_rating_binary(input_filename: str):
-    my_data: List[str] = format_input(input_filename)
+def compute_oxygen_generator_rating_binary(input_filename: str) -> BitStr:
+    my_data: List[BitStr] = format_input(input_filename)
     n = len(my_data[0])
     idx = 0
     while len(my_data) > 1:
@@ -37,7 +34,7 @@ def compute_oxygen_generator_rating_binary(input_filename: str):
     return my_data[0]
 
 
-def compute_c02_scrubber_rating_binary(input_filename: str):
+def compute_c02_scrubber_rating_binary(input_filename: str) -> BitStr:
     my_data: List[str] = format_input(input_filename)
     n = len(my_data[0])
     idx = 0
@@ -48,11 +45,11 @@ def compute_c02_scrubber_rating_binary(input_filename: str):
     return my_data[0]
 
 
-def compute_life_support_rating(input_filename: str):
-    oxygen_generator_rating_binary = compute_oxygen_generator_rating_binary(input_filename)
-    c02_scrubber_rating_binary = compute_c02_scrubber_rating_binary(input_filename)
-    oxygen_generator_rating_decimal = convert_binary_to_decimal(oxygen_generator_rating_binary)
-    c02_scrubber_rating_decimal = convert_binary_to_decimal(c02_scrubber_rating_binary)
+def compute_life_support_rating(input_filename: str) -> int:
+    oxygen_generator_rating_binary: BitStr = compute_oxygen_generator_rating_binary(input_filename)
+    c02_scrubber_rating_binary: BitStr = compute_c02_scrubber_rating_binary(input_filename)
+    oxygen_generator_rating_decimal: int = convert_binary_to_decimal(oxygen_generator_rating_binary)
+    c02_scrubber_rating_decimal: int = convert_binary_to_decimal(c02_scrubber_rating_binary)
     return oxygen_generator_rating_decimal * c02_scrubber_rating_decimal
 
 

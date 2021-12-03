@@ -1,7 +1,12 @@
-from typing import List, Union
+from typing import List, Union, Literal
+
+BitInt = Literal[0, 1]
+
+# TODO: is there a way to enforce strings over an alphabet?
+BitStr = str  # But meant to represent ONLY strings over the alphabet of ['0', '1']
 
 
-def compute_gamma_rate_binary(input_filename: str, n: int) -> List[int]:
+def compute_gamma_rate_binary(input_filename: str, n: int) -> List[BitInt]:
     """
     :param input_filename: file of n-digit binary numbers on each line
     :return: the gamma rate as an n-digit binary number list
@@ -18,19 +23,22 @@ def compute_gamma_rate_binary(input_filename: str, n: int) -> List[int]:
                     count_scoreboard[j] += 1
                 else:
                     count_scoreboard[j] -= 1
-    return [int(final_score > 0) for final_score in count_scoreboard]
+    return [int(final_score > 0) for final_score in count_scoreboard]  # type: ignore # Literal Subtype
 
 
 def compute_power_consumption(input_filename: str, n: int):
-    gamma_rate_binary = compute_gamma_rate_binary(input_filename, n)
-    epsilon_rate_binary = [1 - gamma for gamma in gamma_rate_binary]
+    gamma_rate_binary: List[BitInt] = compute_gamma_rate_binary(input_filename, n)
+    epsilon_rate_binary: List[BitInt] = [1 - gamma for gamma in gamma_rate_binary]  # type: ignore # Literal Subtype
 
-    gamma_rate_decimal = convert_binary_to_decimal(gamma_rate_binary)
-    epsilon_rate_decimal = convert_binary_to_decimal(epsilon_rate_binary)
+    gamma_rate_decimal: int = convert_binary_to_decimal(gamma_rate_binary)
+    epsilon_rate_decimal: int = convert_binary_to_decimal(epsilon_rate_binary)
     return gamma_rate_decimal * epsilon_rate_decimal
 
 
-def convert_binary_to_decimal(binary: Union[List[int], str]) -> int:
+def convert_binary_to_decimal(binary: Union[List[BitInt], BitStr]) -> int:
+    """
+    Converts a binary of one of two forms into its decimal equivalent
+    """
     decimal = 0
     for j in range(1, len(binary) + 1):
         decimal += int(binary[-j]) * 2 ** (j - 1)
