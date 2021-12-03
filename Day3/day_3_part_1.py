@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 
 def compute_gamma_rate_binary(input_filename: str, n: int) -> List[int]:
@@ -25,15 +25,15 @@ def compute_power_consumption(input_filename: str, n: int):
     gamma_rate_binary = compute_gamma_rate_binary(input_filename, n)
     epsilon_rate_binary = [1 - gamma for gamma in gamma_rate_binary]
 
-    gamma_rate_decimal = convert_list_of_ints_binary_to_decimal(gamma_rate_binary)
-    epsilon_rate_decimal = convert_list_of_ints_binary_to_decimal(epsilon_rate_binary)
+    gamma_rate_decimal = convert_binary_to_decimal(gamma_rate_binary)
+    epsilon_rate_decimal = convert_binary_to_decimal(epsilon_rate_binary)
     return gamma_rate_decimal * epsilon_rate_decimal
 
 
-def convert_list_of_ints_binary_to_decimal(binary: List[int]) -> int:
+def convert_binary_to_decimal(binary: Union[List[int], str]) -> int:
     decimal = 0
     for j in range(1, len(binary) + 1):
-        decimal += binary[-j] * 2 ** (j - 1)
+        decimal += int(binary[-j]) * 2 ** (j - 1)
     return decimal
 
 

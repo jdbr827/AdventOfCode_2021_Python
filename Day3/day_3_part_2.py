@@ -1,5 +1,7 @@
 from typing import List, Tuple
 
+from Day3.day_3_part_1 import convert_binary_to_decimal
+
 
 def format_input(input_filename: str) -> List[str]:
     with open(input_filename) as file:
@@ -46,9 +48,15 @@ def compute_c02_scrubber_rating_binary(input_filename: str):
     return my_data[0]
 
 
-def compute_co2_scrubber_rating(input_filename: str):
-    pass
+def compute_life_support_rating(input_filename: str):
+    oxygen_generator_rating_binary = compute_oxygen_generator_rating_binary(input_filename)
+    c02_scrubber_rating_binary = compute_c02_scrubber_rating_binary(input_filename)
+    oxygen_generator_rating_decimal = convert_binary_to_decimal(oxygen_generator_rating_binary)
+    c02_scrubber_rating_decimal = convert_binary_to_decimal(c02_scrubber_rating_binary)
+    return oxygen_generator_rating_decimal * c02_scrubber_rating_decimal
 
 
 print(compute_oxygen_generator_rating_binary('day_3_small_input.txt') == '10111')
 print(compute_c02_scrubber_rating_binary('day_3_small_input.txt') == '01010')
+print(compute_life_support_rating('day_3_small_input.txt') == 230)
+print(compute_life_support_rating('day_3_input.txt') == 2845944)
