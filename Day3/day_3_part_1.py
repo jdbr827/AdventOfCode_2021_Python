@@ -8,21 +8,19 @@ BitStr = str  # But meant to represent ONLY strings over the alphabet of ['0', '
 
 def compute_gamma_rate_binary(input_filename: str, n: int) -> List[BitInt]:
     """
+    :param n: a positive integer
     :param input_filename: file of n-digit binary numbers on each line
     :return: the gamma rate as an n-digit binary number list
     """
     count_scoreboard = [0 for _ in range(n)]
     with open(input_filename) as file:
 
-        #  INVAR @ iteration i: count_scoreboard[j] =
-        #   number of 1s in position j of first i binary values
-        #   - number of 0s in position j for first i binary values
+        # INVAR @ iteration i:
+        #   Let C[b, idx, i] = number of bs in position idx of first i binary values.
+        #   Then, count_scoreboard[idx] = C[1, idx, i] - C[0, idx i]
         while this_bin := file.readline():
             for j in range(n):
-                if this_bin[j] == '1':
-                    count_scoreboard[j] += 1
-                else:
-                    count_scoreboard[j] -= 1
+                count_scoreboard[j] += 1 if this_bin[j] == '1' else -1
     return [int(final_score > 0) for final_score in count_scoreboard]  # type: ignore # Literal Subtype
 
 
