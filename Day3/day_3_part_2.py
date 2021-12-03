@@ -30,24 +30,18 @@ def compute_oxygen_generator_rating_binary(input_filename: str):
     idx = 0
     while len(my_data) > 1:
         (containing_zeros, containing_ones) = split_data_by_bit_at_index(my_data, idx)
-        if len(containing_ones) >= len(containing_zeros):
-            my_data = containing_ones
-        else:
-            my_data = containing_zeros
+        my_data = containing_ones if len(containing_ones) >= len(containing_zeros) else containing_zeros
         idx += 1
     return my_data[0]
 
 
-def compute_co2_scrubber_rating_binary(input_filename: str):
+def compute_c02_scrubber_rating_binary(input_filename: str):
     my_data: List[str] = format_input(input_filename)
     n = len(my_data[0])
     idx = 0
     while len(my_data) > 1:
         (containing_zeros, containing_ones) = split_data_by_bit_at_index(my_data, idx)
-        if len(containing_ones) < len(containing_zeros):
-            my_data = containing_ones
-        else:
-            my_data = containing_zeros
+        my_data = containing_ones if len(containing_ones) < len(containing_zeros) else containing_zeros
         idx += 1
     return my_data[0]
 
@@ -57,4 +51,4 @@ def compute_co2_scrubber_rating(input_filename: str):
 
 
 print(compute_oxygen_generator_rating_binary('day_3_small_input.txt') == '10111')
-print(compute_co2_scrubber_rating_binary('day_3_small_input.txt') == '01010')
+print(compute_c02_scrubber_rating_binary('day_3_small_input.txt') == '01010')
