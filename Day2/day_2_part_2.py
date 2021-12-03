@@ -1,5 +1,5 @@
-
-def compute_destination(input_filename: str):
+def compute_destination_2(input_filename: str):
+    aim = 0
     horizontal = 0
     depth = 0
     with open(input_filename) as file:
@@ -8,14 +8,15 @@ def compute_destination(input_filename: str):
             amount = int(amount)
             if keyword == 'forward':
                 horizontal += amount
+                depth += amount * aim
             elif keyword == 'down':
-                depth += amount
+                aim += amount
             elif keyword == 'up':
-                depth -= amount
+                aim -= amount
         return (horizontal, depth)
 
 
-print(compute_destination('day_2_small_input.txt') == (15, 10))
+print(compute_destination_2('day_2_small_input.txt') == (15, 60))
 
-(horiz, dep) = compute_destination('day_2_input.txt')
-print(horiz * dep)
+(horiz, dep) = compute_destination_2('day_2_input.txt')
+print(horiz * dep) # 1599311480
