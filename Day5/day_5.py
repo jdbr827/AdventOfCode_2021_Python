@@ -17,20 +17,10 @@ def process_line(map, x1, y1, x2, y2, consider_diagonal=True):
             map[(x, y1)] += 1
     elif consider_diagonal:
         dist = abs(x2 - x1)
-        if x1 < x2:
-            if y1 < y2:
-                for i in range(dist + 1):
-                    map[x1 + i, y1 + i] += 1
-            else:
-                for i in range(dist + 1):
-                    map[x1 + i, y1 - i] += 1
-        else:
-            if y1 < y2:
-                for i in range(dist+1):
-                    map[x1 - i, y1 + i] += 1
-            else:
-                for i in range(dist+1):
-                    map[x1 - i, y1 - i] += 1
+        x_dir = 1 if x1 < x2 else -1
+        y_dir = 1 if y1 < y2 else -1
+        for i in range(dist + 1):
+            map[x1 + (x_dir*i), y1 + (y_dir * i)] += 1
     return map
 
 
@@ -40,7 +30,6 @@ def find_hydraulic_vents(filename, consider_diagonal=True):
         while line := f.readline():
             (x1, y1, x2, y2) = read_in_points_from_input_line(line)
             vent_freq = process_line(vent_freq, x1, y1, x2, y2, consider_diagonal)
-    # print(dict(vent_freq))
     return len([p for p in vent_freq if vent_freq[p] > 1])
 
 
