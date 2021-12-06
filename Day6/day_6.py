@@ -30,3 +30,4 @@ def simulate_lanternfish(filename, days):
 print(simulate_lanternfish('day_6_small_input.txt', 18) == 26)
 print(simulate_lanternfish('day_6_small_input.txt', 80) == 5934)
 print(simulate_lanternfish('day_6_input.txt', 80) == 386640)
+print(simulate_lanternfish('day_6_input.txt', 256) == 1733403626279)
