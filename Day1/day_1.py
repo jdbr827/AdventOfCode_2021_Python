@@ -9,8 +9,8 @@ def count_increases(a: List[int]) -> int:
     :param a:
     :return:
     """
-    if a == []:
-        return 0
+    if a == []: return 0
+
     count = 0
     for i in range(len(a) - 1):
         if a[i + 1] > a[i]:
