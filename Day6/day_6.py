@@ -11,8 +11,6 @@ def create_initial_lanternfish_frequency_table(filename):
         return freq_arr
 
 
-
-
 def move_forward_one_day(freq_arr):
     babys = freq_arr.pop(0)
     freq_arr.append(babys)
