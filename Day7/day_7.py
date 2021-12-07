@@ -28,6 +28,6 @@ def find_lowest_fuel_cost_2(filename):
 
 print(create_initial_frequency_table('day_7_small_input.txt'))
 print(find_lowest_fuel_cost('day_7_small_input.txt') == 37)
-print(find_lowest_fuel_cost('day_7_input.txt'))
+print(find_lowest_fuel_cost('day_7_input.txt') == 355764)
 print(find_lowest_fuel_cost_2('day_7_small_input.txt') == 168)
-print(find_lowest_fuel_cost_2('day_7_input.txt'))
+print(find_lowest_fuel_cost_2('day_7_input.txt') == 99634572)
