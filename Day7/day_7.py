@@ -9,22 +9,25 @@ def create_initial_frequency_table(filename):
 
 def find_lowest_fuel_cost(filename):
     freq_arr = create_initial_frequency_table(filename)
-    fuel_arr = [i * freq_arr[i] for i in range(len(freq_arr))]
     fuel_used_from_above = sum([i * freq_arr[i] for i in range(len(freq_arr))])
-    crabs_below = 0
     fuel_used_from_below = 0
-    crabs_above = sum(freq_arr[1:])
     least_fuel_used = fuel_used_from_below + fuel_used_from_above
     for i in range(1, len(freq_arr)):
-        crabs_below += freq_arr[i - 1]
-        # fuel_used_from_below = sum([abs(j-i) * ])
-        crabs_above -= freq_arr[i]
-        # fuel_used_from_above -= crabs_above
-        # total_fuel = fuel_used_from_below + fuel_used_from_above
         total_fuel = sum([abs(i-j) * freq_arr[j] for j in range(len(freq_arr))])
         least_fuel_used = min(least_fuel_used, total_fuel)
     return least_fuel_used
 
-# print(create_initial_frequency_table('day_7_small_input.txt'))
+def find_lowest_fuel_cost_2(filename):
+    freq_arr = create_initial_frequency_table(filename)
+    print([sum([k for k in range(j+1)]) * freq_arr[j] for j in range(len(freq_arr))])
+    least_fuel_used = sum([j * (j + 1) * freq_arr[j] for j in range(len(freq_arr))])
+    for i in range(1, len(freq_arr)):
+        total_fuel = sum([abs(j-i) * (abs(j-i) + 1) * freq_arr[j] for j in range(len(freq_arr))])
+        least_fuel_used = min(least_fuel_used, total_fuel)
+    return 0.5*least_fuel_used
+
+print(create_initial_frequency_table('day_7_small_input.txt'))
 print(find_lowest_fuel_cost('day_7_small_input.txt') == 37)
 print(find_lowest_fuel_cost('day_7_input.txt'))
+print(find_lowest_fuel_cost_2('day_7_small_input.txt') == 168)
+print(find_lowest_fuel_cost_2('day_7_input.txt'))
