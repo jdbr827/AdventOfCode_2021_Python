@@ -9,16 +9,23 @@ def create_initial_frequency_table(filename):
 
 def find_lowest_fuel_cost(filename):
     freq_arr = create_initial_frequency_table(filename)
-    least_fuel_used = sum([i * freq_arr[i] for i in range(len(freq_arr))])
-    for i in range(1, len(freq_arr)):
-        total_fuel = sum([abs(i - j) * freq_arr[j] for j in range(len(freq_arr))])
-        least_fuel_used = min(least_fuel_used, total_fuel)
-    return least_fuel_used
+    m = len(freq_arr)
+    g = sum([i * freq_arr[i] for i in range(m)])
+    crabs_left = 0
+    crabs_right_and_center = sum(freq_arr)
+    least_fuel = g
+    for i in range(m):
+        crabs_left += freq_arr[i]
+        crabs_right_and_center -= freq_arr[i]
+        g += crabs_left - crabs_right_and_center
+        least_fuel = min(least_fuel, g)
+    return least_fuel
+
+    #return min([sum([abs(i - j) * freq_arr[j] for j in range(len(freq_arr))]) for i in range(len(freq_arr))])
 
 
 def find_lowest_fuel_cost_2(filename):
     freq_arr = create_initial_frequency_table(filename)
-    print([sum([k for k in range(j + 1)]) * freq_arr[j] for j in range(len(freq_arr))])
     least_fuel_used = sum([j * (j + 1) * freq_arr[j] for j in range(len(freq_arr))])
     for i in range(1, len(freq_arr)):
         total_fuel = sum([abs(j - i) * (abs(j - i) + 1) * freq_arr[j] for j in range(len(freq_arr))])
