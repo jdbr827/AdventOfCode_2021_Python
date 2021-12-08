@@ -55,9 +55,9 @@ def decode_chars(input_digits):
     digit_mapping[6] = sort_chars([digit for digit in input_digits if len(digit) == 6 and not all([ch in digit for ch in input_digits[1]])][0])
     f = [ch for ch in digit_mapping[6] if ch in digit_mapping[1]][0]
     digit_mapping[2] = sort_chars([digit for digit in input_digits if len(digit) == 5 and f not in digit][0])
-    digit_mapping[5] = sort_chars([digit for digit in input_digits if len(digit) == 5 and "".join(sorted(digit)) not in digit_mapping][0])
+    digit_mapping[5] = sort_chars([digit for digit in input_digits if len(digit) == 5 and sort_chars(digit) not in digit_mapping][0])
     digit_mapping[9] = sort_chars([digit for digit in input_digits if len(digit) == 6 and all(ch in digit for ch in digit_mapping[4])][0])
-    digit_mapping[0] = sort_chars([digit for digit in input_digits if len(digit) == 6 and "".join(sorted(digit)) not in digit_mapping][0])
+    digit_mapping[0] = sort_chars([digit for digit in input_digits if len(digit) == 6 and sort_chars(digit) not in digit_mapping][0])
     return digit_mapping
 
 
