@@ -48,7 +48,6 @@ def risk_level(filename) -> int:
 print(risk_level('day_9_small_input.txt') == 15)
 print(risk_level('day_9_input.txt') == 541)
 
-
 def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
     """
 
@@ -69,6 +68,7 @@ def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
                 for nbr in [(i + 1, j), (i - 1, j), (i, j - 1), (i, j + 1)]:
                     if padded_matrix[nbr[0]][nbr[1]] < 9:
                         basin_finder.union((i, j), nbr)
+
     freq_table = defaultdict(int)
     for i in range(1, n + 1):
         for j in range(1, m + 1):
@@ -86,4 +86,3 @@ def product_of_three_largest_basins(filename):
 
 print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
 print(product_of_three_largest_basins('day_9_input.txt') == 847504)
-# if padded_matrix[i][j] < min(padded_matrix[i+1][j], padded_matrix[i-1][j], padded_matrix[i][j-1], padded_matrix[i][j+1]):
