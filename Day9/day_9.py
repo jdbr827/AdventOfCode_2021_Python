@@ -45,9 +45,8 @@ def risk_level(filename) -> int:
     low_points = find_low_points(matrix)
     return sum([p + 1 for p in low_points])
 
-
-# print(risk_level('day_9_small_input.txt') == 15)
-print(risk_level('day_9_input.txt'))
+print(risk_level('day_9_small_input.txt') == 15)
+print(risk_level('day_9_input.txt') == 541)
 
 
 def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
@@ -86,5 +85,5 @@ def product_of_three_largest_basins(filename):
 
 
 print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
-print(product_of_three_largest_basins('day_9_input.txt'))
+print(product_of_three_largest_basins('day_9_input.txt') == 847504)
 # if padded_matrix[i][j] < min(padded_matrix[i+1][j], padded_matrix[i-1][j], padded_matrix[i][j-1], padded_matrix[i][j+1]):
