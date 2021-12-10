@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import List, Dict, Tuple
-import unionfind
+from . import unionfind
 
 
 def read_in_matrix(filename) -> List[List[int]]:
@@ -11,7 +11,7 @@ def read_in_matrix(filename) -> List[List[int]]:
     return matrix
 
 
-a = read_in_matrix('day_9_small_input.txt')
+# a = read_in_matrix('day_9_small_input.txt')
 
 
 def pad_matrix_with_infinitys(matrix: List[List[float]]) -> List[List[float]]:
@@ -24,8 +24,8 @@ def pad_matrix_with_infinitys(matrix: List[List[float]]) -> List[List[float]]:
     matrix.append([float("inf") for _ in range(m + 2)])
     return matrix
 
-
-b = pad_matrix_with_infinitys(a)
+#
+# b = pad_matrix_with_infinitys(a)
 
 
 def find_low_points(padded_matrix: List[List[float]]) -> List[float]:
@@ -45,8 +45,8 @@ def risk_level(filename) -> int:
     low_points = find_low_points(matrix)
     return sum([p + 1 for p in low_points])
 
-print(risk_level('day_9_small_input.txt') == 15)
-print(risk_level('day_9_input.txt') == 541)
+# print(risk_level('day_9_small_input.txt') == 15)
+# print(risk_level('day_9_input.txt') == 541)
 
 def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
     """
@@ -84,5 +84,5 @@ def product_of_three_largest_basins(filename):
     return sizes[-1] * sizes[-2] * sizes[-3]
 
 
-print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
-print(product_of_three_largest_basins('day_9_input.txt') == 847504)
+# print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
+# print(product_of_three_largest_basins('day_9_input.txt') == 847504)
