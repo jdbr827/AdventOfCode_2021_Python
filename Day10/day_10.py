@@ -58,28 +58,33 @@ def score_line(line: NavigationLine) -> Tuple[bool, int]:
     return False, score
 
 
-def file_autocomplete_score(filename):
+def collect_appropriate_scores(filename: str, desired_is_corrupted: bool):
+    """
+    returns the scores of all lines in the provided file that are corrupted (if desired_is_corrupted is True) or that
+    are NOT corrupted (if is_corrupted is False)
+    :return:
+    """
     scores = []
     for line in read_in_lines(filename):
-        (is_corrupted, score) = score_line(line)
-        if not is_corrupted:
+        (line_is_corrupted, score) = score_line(line)
+        if desired_is_corrupted == line_is_corrupted:
             scores.append(score)
+    return scores
+
+
+def file_autocomplete_score(filename):
+    scores = collect_appropriate_scores(filename, False)
     scores.sort()
     return scores[int(len(scores) / 2)]
 
 
 def file_corrupted_score(filename):
-    scores = []
-    for line in read_in_lines(filename):
-        (is_corrupted, score) = score_line(line)
-        if is_corrupted:
-            scores.append(score)
+    scores = collect_appropriate_scores(filename, True)
     return sum(scores)
 
 
 print(file_corrupted_score('day_10_small_input.txt') == 26397)
 print(file_corrupted_score('day_10_input.txt') == 166191)
-
 
 print(file_autocomplete_score('day_10_small_input.txt') == 288957)
 print(file_autocomplete_score('day_10_input.txt') == 1152088313)
