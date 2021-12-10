@@ -38,8 +38,22 @@ def is_line_corrupted(line: NavigationLine) -> Optional[NavigationChar]:
     return None
 
 
+SCORE: Dict[CloseChar, int] = {
+    ')': 3,
+    ']': 57,
+    '}': 1197,
+    '>': 25137,
+    None: 0
+}
 
 
-line_generator: Generator[NavigationLine, None, None] = read_in_lines('day_10_small_input.txt')
-for line in line_generator:
-    print(is_line_corrupted(line))
+def score_line(line: NavigationLine) -> int:
+    """
+    returns the score of the first illegal character in line, or 0 if no such char exists
+    :param line:
+    :return:
+    """
+    return SCORE[is_line_corrupted(line)]
+
+print(sum([score_line(line) for line in read_in_lines('day_10_small_input.txt')]) == 26397)
+print(sum([score_line(line) for line in read_in_lines('day_10_input.txt')]))
