@@ -1,4 +1,5 @@
-from typing import Optional, Generator, Literal, Union, Sequence, Dict
+from abc import abstractmethod, ABC
+from typing import Optional, Generator, Literal, Union, Sequence, Dict, Tuple
 
 OpenChar = Literal['(', '[', '{', '<']
 CloseChar = Literal[')', ']', '}', '>']
@@ -12,6 +13,20 @@ OPEN_TO_CLOSE_DICT: Dict[OpenChar, CloseChar] = {
     '<': '>'
 }
 
+CORRUPTED_SCORE: Dict[CloseChar, int] = {
+    ')': 3,
+    ']': 57,
+    '}': 1197,
+    '>': 25137,
+}
+
+AUTOCOMPLETE_SCORE: Dict[CloseChar, int] = {
+    ')': 1,
+    ']': 2,
+    '}': 3,
+    '>': 4,
+}
+
 
 def read_in_lines(filename: str) -> Generator[NavigationLine, None, None]:
     with open(filename) as f:
@@ -19,13 +34,13 @@ def read_in_lines(filename: str) -> Generator[NavigationLine, None, None]:
             yield line.strip()
 
 
-def is_line_corrupted(line: NavigationLine) -> Optional[NavigationChar]:
+def score_line(line: NavigationLine) -> Tuple[bool, int]:
     """
-    Determines if the inputted line is corrupted.
-    If it is, returns the first illegal character in the line.
-    Otherwise, returns None
+    Determines the score of the line.
     :param line:
     :return:
+        - bool is_corrupted if the line is corrupted or just incomplete
+        - int score of the line based on the scoring rules for that line
     """
     open_stack = []
 
@@ -34,26 +49,37 @@ def is_line_corrupted(line: NavigationLine) -> Optional[NavigationChar]:
             open_stack.append(ch)
         else:
             if OPEN_TO_CLOSE_DICT[open_stack.pop()] != ch:
-                return ch
-    return None
+                return True, CORRUPTED_SCORE[ch]
+    # line is now incomplete
+    score = 0
+    while open_stack:
+        score *= 5
+        score += AUTOCOMPLETE_SCORE[OPEN_TO_CLOSE_DICT[open_stack.pop()]]
+    return False, score
 
 
-SCORE: Dict[CloseChar, int] = {
-    ')': 3,
-    ']': 57,
-    '}': 1197,
-    '>': 25137,
-    None: 0
-}
+def file_autocomplete_score(filename):
+    scores = []
+    for line in read_in_lines(filename):
+        (is_corrupted, score) = score_line(line)
+        if not is_corrupted:
+            scores.append(score)
+    scores.sort()
+    return scores[int(len(scores) / 2)]
 
 
-def score_line(line: NavigationLine) -> int:
-    """
-    returns the score of the first illegal character in line, or 0 if no such char exists
-    :param line:
-    :return:
-    """
-    return SCORE[is_line_corrupted(line)]
+def file_corrupted_score(filename):
+    scores = []
+    for line in read_in_lines(filename):
+        (is_corrupted, score) = score_line(line)
+        if is_corrupted:
+            scores.append(score)
+    return sum(scores)
 
-print(sum([score_line(line) for line in read_in_lines('day_10_small_input.txt')]) == 26397)
-print(sum([score_line(line) for line in read_in_lines('day_10_input.txt')]))
+
+print(file_corrupted_score('day_10_small_input.txt') == 26397)
+print(file_corrupted_score('day_10_input.txt') == 166191)
+
+
+print(file_autocomplete_score('day_10_small_input.txt') == 288957)
+print(file_autocomplete_score('day_10_input.txt') == 1152088313)
