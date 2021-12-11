@@ -64,7 +64,19 @@ def count_flashes_over_n_steps(filename, steps):
         flashes += flashes_this_step
     return flashes
 
+def determine_when_all_octopi_flash(filename):
+    matrix = pad_matrix_with_negative_infinitys(read_in_matrix(filename))
+    flashes_this_step = 0
+    steps = 0
+    while flashes_this_step != 100:
+        (matrix, flashes_this_step) = execute_step(matrix)
+        steps += 1
+    return steps
+
+
 
 print(count_flashes_over_n_steps('day_11_test_input_1.txt', 10) == 204)
 print(count_flashes_over_n_steps('day_11_test_input_1.txt', 100) == 1656)
 print(count_flashes_over_n_steps('day_11_input.txt', 100) == 1640)
+print(determine_when_all_octopi_flash('day_11_test_input_1.txt') == 195)
+print(determine_when_all_octopi_flash('day_11_input.txt'))
