@@ -56,14 +56,15 @@ def execute_step(matrix):
     return matrix, flashes
 
 
-def count_flashes_over_n_steps(matrix, steps):
+def count_flashes_over_n_steps(filename, steps):
     flashes = 0
-    matrix = pad_matrix_with_negative_infinitys(matrix)
+    matrix = pad_matrix_with_negative_infinitys(read_in_matrix(filename))
     for _ in range(steps):
         (matrix, flashes_this_step) = execute_step(matrix)
         flashes += flashes_this_step
     return flashes
 
 
-M = read_in_matrix('day_11_test_input_1.txt')
-print(count_flashes_over_n_steps(M, 10))
+print(count_flashes_over_n_steps('day_11_test_input_1.txt', 10) == 204)
+print(count_flashes_over_n_steps('day_11_test_input_1.txt', 100) == 1656)
+print(count_flashes_over_n_steps('day_11_input.txt', 100) == 1640)
