@@ -1,31 +1,17 @@
+import math
 from collections import defaultdict
 from typing import List, Dict, Tuple
-from . import unionfind
+
+from util import pad_matrix_with_value
+import unionfind
 
 
-def read_in_matrix(filename) -> List[List[int]]:
+def read_in_matrix(filename) -> List[List[float]]:
     matrix = []
     with open(filename) as f:
         while line := f.readline():
-            matrix.append(list(map(int, list(line.strip()))))
+            matrix.append(list(map(float, list(line.strip()))))
     return matrix
-
-
-# a = read_in_matrix('day_9_small_input.txt')
-
-
-def pad_matrix_with_infinitys(matrix: List[List[float]]) -> List[List[float]]:
-    n = len(matrix)
-    m = len(matrix[0])
-    for i in range(n):
-        matrix[i].insert(0, float("inf"))
-        matrix[i].append(float("inf"))
-    matrix.insert(0, [float("inf") for _ in range(m + 2)])
-    matrix.append([float("inf") for _ in range(m + 2)])
-    return matrix
-
-#
-# b = pad_matrix_with_infinitys(a)
 
 
 def find_low_points(padded_matrix: List[List[float]]) -> List[float]:
@@ -41,12 +27,13 @@ def find_low_points(padded_matrix: List[List[float]]) -> List[float]:
 
 
 def risk_level(filename) -> int:
-    matrix = pad_matrix_with_infinitys(read_in_matrix(filename))
+    matrix = pad_matrix_with_value(read_in_matrix(filename), math.inf)
     low_points = find_low_points(matrix)
     return sum([p + 1 for p in low_points])
 
-# print(risk_level('day_9_small_input.txt') == 15)
-# print(risk_level('day_9_input.txt') == 541)
+
+print(risk_level('day_9_small_input.txt') == 15)
+print(risk_level('day_9_input.txt') == 541)
 
 def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
     """
@@ -78,11 +65,10 @@ def find_basins(padded_matrix: List[List[float]]) -> Dict[Tuple[int, int], int]:
 
 
 def product_of_three_largest_basins(filename):
-    basins: Dict[Tuple[int, int], int] = dict(find_basins(pad_matrix_with_infinitys(read_in_matrix(filename))))
+    basins: Dict[Tuple[int, int], int] = dict(find_basins(pad_matrix_with_value(read_in_matrix(filename), math.inf)))
     sizes: List[int] = list(basins.values())
     sizes.sort()
     return sizes[-1] * sizes[-2] * sizes[-3]
 
-
-# print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
-# print(product_of_three_largest_basins('day_9_input.txt') == 847504)
+print(product_of_three_largest_basins('day_9_small_input.txt') == 1134)
+print(product_of_three_largest_basins('day_9_input.txt') == 847504)

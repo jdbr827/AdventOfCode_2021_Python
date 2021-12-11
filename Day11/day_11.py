@@ -1,26 +1,17 @@
-from typing import List
+import math
+
+from util import pad_matrix_with_value
 
 
 def read_in_matrix(filename):
     matrix = []
     with open(filename) as f:
         while line := f.readline():
-            matrix.append(list(map(int, list(line.strip()))))
+            matrix.append(list(map(float, list(line.strip()))))
     return matrix
 
 
 print(read_in_matrix('day_11_test_input_1.txt'))
-
-
-def pad_matrix_with_negative_infinitys(matrix: List[List[float]]) -> List[List[float]]:
-    n = len(matrix)
-    m = len(matrix[0])
-    for i in range(n):
-        matrix[i].insert(0, -float("inf"))
-        matrix[i].append(-float("inf"))
-    matrix.insert(0, [-float("inf") for _ in range(m + 2)])
-    matrix.append([-float("inf") for _ in range(m + 2)])
-    return matrix
 
 
 def execute_step(matrix):
@@ -58,14 +49,15 @@ def execute_step(matrix):
 
 def count_flashes_over_n_steps(filename, steps):
     flashes = 0
-    matrix = pad_matrix_with_negative_infinitys(read_in_matrix(filename))
+    matrix = pad_matrix_with_value(read_in_matrix(filename), -math.inf)
     for _ in range(steps):
         (matrix, flashes_this_step) = execute_step(matrix)
         flashes += flashes_this_step
     return flashes
 
+
 def determine_when_all_octopi_flash(filename):
-    matrix = pad_matrix_with_negative_infinitys(read_in_matrix(filename))
+    matrix = pad_matrix_with_value(read_in_matrix(filename), -math.inf)
     flashes_this_step = 0
     steps = 0
     while flashes_this_step != 100:
@@ -74,9 +66,8 @@ def determine_when_all_octopi_flash(filename):
     return steps
 
 
-
 print(count_flashes_over_n_steps('day_11_test_input_1.txt', 10) == 204)
 print(count_flashes_over_n_steps('day_11_test_input_1.txt', 100) == 1656)
 print(count_flashes_over_n_steps('day_11_input.txt', 100) == 1640)
 print(determine_when_all_octopi_flash('day_11_test_input_1.txt') == 195)
-print(determine_when_all_octopi_flash('day_11_input.txt'))
+print(determine_when_all_octopi_flash('day_11_input.txt') == 312)
