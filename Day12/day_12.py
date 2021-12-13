@@ -23,6 +23,12 @@ def count_cave_paths_recursive(start_node, graph: Adjacency_List, visited_nodes:
     return sum([count_cave_paths_recursive(neighbor, graph, new_visited_nodes) for neighbor in graph[start_node]])
 
 
-g = read_in_edges('day_12_small_input.txt')
-print(g)
-print(count_cave_paths_recursive('start', g, []))
+def count_cave_paths_from_filename(filename):
+    g = read_in_edges(filename)
+    return count_cave_paths_recursive('start', g, [])
+
+
+print(count_cave_paths_from_filename('day_12_small_input.txt') == 10)
+print(count_cave_paths_from_filename('day_12_medium_input.txt') == 19)
+print(count_cave_paths_from_filename('day_12_large_input.txt') == 226)
+print(count_cave_paths_from_filename('day_12_input.txt'))
