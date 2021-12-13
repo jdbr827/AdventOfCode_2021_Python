@@ -15,44 +15,49 @@ def read_in_edges(filename) -> Adjacency_List:
     return adjacency_graph
 
 
-def count_cave_paths_recursive(start_node, graph: Adjacency_List, visited_nodes: List[Node]):
+def is_small_cave(node: Node):
+    return node.islower()
+
+
+def count_cave_walks(start_node, graph: Adjacency_List, visited_nodes: List[Node],
+                     can_visit_a_node_twice: bool):
+    """
+    Recursively counts the number of legal walks through a cave from the given start_node to node labelled n
+    :param start_node: the starting node of the remainder of the walk
+    :param graph: the graph in adjacency list format
+    :param visited_nodes: the small caves that have already been visited at least once in the walk
+    :param can_visit_a_node_twice: whether you are allowed to visit ONE small cave twice in the walk.
+        Can be False because we are not allowing such walks (Part 1),
+        OR because a small cave has already been visited at least once (Part 2)
+    :return: the number of legal walks remaining from start_node
+    """
     if start_node == 'end': return 1
-    if start_node in visited_nodes: return 0
+    if start_node in visited_nodes:
+        if start_node != 'start' and can_visit_a_node_twice:
+            can_visit_a_node_twice = False
+        else:
+            return 0
     new_visited_nodes = visited_nodes[:]
-    if start_node.islower(): new_visited_nodes.append(start_node)
-    return sum([count_cave_paths_recursive(neighbor, graph, new_visited_nodes) for neighbor in graph[start_node]])
+    if is_small_cave(start_node): new_visited_nodes.append(start_node)
+    return sum(
+        [count_cave_walks(neighbor, graph, new_visited_nodes, can_visit_a_node_twice) for neighbor in
+         graph[start_node]])
 
 
 def count_cave_paths_from_filename(filename):
     g = read_in_edges(filename)
-    return count_cave_paths_recursive('start', g, [])
-
-
-def count_cave_paths_part_2_recursive(start_node, graph: Adjacency_List, visited_nodes: List[Node],
-                                      visited_node_twice: bool):
-    if start_node == 'end': return 1
-    if start_node in visited_nodes:
-        if start_node != 'start' and not visited_node_twice:
-            visited_node_twice = True
-        else:
-            return 0
-    new_visited_nodes = visited_nodes[:]
-    if start_node.islower(): new_visited_nodes.append(start_node)
-    return sum(
-        [count_cave_paths_part_2_recursive(neighbor, graph, new_visited_nodes, visited_node_twice) for neighbor in
-         graph[start_node]])
+    return count_cave_walks('start', g, [], False)
 
 
 def count_cave_paths_from_filename_part_2(filename):
     g = read_in_edges(filename)
-    return count_cave_paths_part_2_recursive('start', g, [], False)
+    return count_cave_walks('start', g, [], True)
 
 
 print(count_cave_paths_from_filename('day_12_small_input.txt') == 10)
 print(count_cave_paths_from_filename('day_12_medium_input.txt') == 19)
 print(count_cave_paths_from_filename('day_12_large_input.txt') == 226)
 print(count_cave_paths_from_filename('day_12_input.txt') == 4970)
-
 
 print(count_cave_paths_from_filename_part_2('day_12_small_input.txt') == 36)
 print(count_cave_paths_from_filename_part_2('day_12_medium_input.txt') == 103)
