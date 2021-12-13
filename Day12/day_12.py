@@ -31,17 +31,21 @@ def count_cave_walks(start_node, graph: Adjacency_List, visited_nodes: List[Node
         OR because a small cave has already been visited at least once (Part 2)
     :return: the number of legal walks remaining from start_node
     """
-    if start_node == 'end': return 1
+    if start_node == 'end':
+        return 1
     if start_node in visited_nodes:
         if start_node != 'start' and can_visit_a_node_twice:
             can_visit_a_node_twice = False
         else:
             return 0
+
     new_visited_nodes = visited_nodes[:]
-    if is_small_cave(start_node): new_visited_nodes.append(start_node)
+    if is_small_cave(start_node):
+        new_visited_nodes.append(start_node)
+
     return sum(
-        [count_cave_walks(neighbor, graph, new_visited_nodes, can_visit_a_node_twice) for neighbor in
-         graph[start_node]])
+        [count_cave_walks(neighbor, graph, new_visited_nodes, can_visit_a_node_twice)
+         for neighbor in graph[start_node]])
 
 
 def count_cave_paths_from_filename(filename):
